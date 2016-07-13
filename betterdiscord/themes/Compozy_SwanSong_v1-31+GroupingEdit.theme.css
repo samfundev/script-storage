@@ -1,0 +1,587 @@
+//META{"name":"COMPOZY + GroupingEdit","description":"Compozy is a tasteful modification of the default theme that aims to maintain Discord's cleanliness and breathability, while slimming down on most of the oversized elements and wasteful negative space. Supports both Light/Dark modes and Cozy/Compact modes.","author":"Swan Song (@SonataSwanSong)","version":"1.31"}*//
+
+/*
+This is edit of the original COMPOZY I use because I didn't like how grouping lines were removed.
+The original COMPOZY by SonataSwanSong:
+https://www.reddit.com/r/discordapp/comments/4qcow0/introducing_compozy_a_cleaner_cozier_more_compact/
+*/
+
+.body {
+}
+
+  /*************************/
+ /*	TITLE BAR	          */
+/*************************/
+
+/* GUILD TITLE */
+
+    .guild-header header {
+        padding-left:15px;
+        padding-right:10px;
+        padding-top:20px;
+        padding-bottom:20px;
+        height:0px;
+    }
+
+    .guild-header header span {
+        line-height:40px;
+        font-size:15px;
+        padding-top:2px;
+    }
+
+/* MENU */
+
+    .guild-header ul {
+        top:40px;
+        left:10px;
+        width:90%;
+        box-shadow: 0px 0px 4px rgba(0,0,0,0.1),inset 0 -1px 0 rgba(0,0,0,.06);
+    }
+
+    .guild-header ul a {
+        margin-top:5px;
+        margin-bottom:5px;
+        padding-top:7px;
+        padding-bottom:7px;
+        margin-left:10px;
+        margin-right:10px;
+        font-size:14px;
+    }
+
+/* CHAT TITLE */
+
+    .chat .title-wrap {
+        padding-left:10px;
+        padding-right:10px;
+        padding-top:0px;
+        padding-bottom:1px;
+        height:41px;
+        min-height:40px;
+    }
+
+    .chat .title-wrap .title {
+        font-size:16px;
+    }
+
+/* BUTTONS */
+
+    #bd-customcss-detach-container {
+        padding-top:40px;
+    }
+
+	.win-buttons {
+        height:40px;
+    }
+		.win-minimize:hover {
+            background-color:#f5f8fa;
+            border-radius:5px;
+		}
+		.win-maximize:hover {
+            background-color:#f5f8fa;
+            border-radius:5px;
+		}
+		.win-close:hover {
+            background-color:#faeded;
+            border-radius:5px;
+		}
+		.win-buttons-light .win-minimize:hover {
+            background-color:#2e3136;
+            border-radius:5px;
+		}
+		.win-buttons-light .win-maximize:hover {
+            background-color:#2e3136;
+            border-radius:5px;
+		}
+		.win-buttons-light .win-close:hover {
+            background-color:#361b1b;
+            border-radius:5px;
+		}
+	.header-toolbar button:hover {
+		background-color:#ebeef0;
+		border-radius:5px;
+	}
+
+	.theme-dark .header-toolbar button.active {
+		background-color:#2e3136;
+		border-radius:5px;
+	}
+
+	.theme-dark .header-toolbar button:hover {
+		background-color:#2e3136;
+		border-radius:5px;
+	}
+
+	.header-toolbar .separator.separator-win {
+        margin-right:108px;
+	}
+
+	.btn-hamburger:hover {
+		background-color:#4f5359;
+	}
+
+
+  /*************************/
+ /*	GUILDS	              */
+/*************************/
+
+/* FRAME */
+
+    .guilds-wrapper {
+        width:70px;
+    }
+
+	/* center-justify */
+    .guilds-wrapper .guilds {
+        padding-left:10px;
+        padding-right:10px;
+    }
+
+/* GUILDS */
+
+    .guild {
+        padding-left:10px;
+        padding-right:10px;
+        left:-10px;
+    }
+        .guild:hover {
+            background-color: #2e3136;
+        }
+        .guild.selected {
+            background-color: #2e3136;
+        }
+        .guilds-wrapper .guilds .guild.selected:before {
+            left:-7px;
+        }
+
+    /* LEADING */
+
+        /* first */
+        .guilds-wrapper .guilds .guild {
+            margin-top:px;
+            padding-top:3px;
+            padding-bottom:3px;
+        }
+
+        /* subsequent */
+        .guilds-wrapper .guilds .guild+.guild {
+            margin-top:0px;
+            padding-top:3px;
+            padding-bottom:3px;
+        }
+
+        /* friends online */
+        .guilds-wrapper .guilds .friends-online {
+            margin-top:5px;
+            margin-bottom:5px;
+        }
+
+    /* ADD NEW */
+
+        .guilds .guilds-add {
+            margin-left:10px;
+            margin-top:10px;
+            padding-top:10px;
+        }
+
+/* BADGES */
+
+    .guilds-wrapper .guilds .guild.unread:before {
+        left: -7px;
+        border-radius:10px;
+        height:;
+    }
+
+    .guilds-wrapper .guilds .guild .badge {
+        bottom: 0px;
+        right: 8px;
+    }
+
+	.guilds-wrapper .guilds .guild.audio .guild-inner:after {
+		top: -2px;
+		right:1px;
+		width:20px;
+		height:20px;
+		background-size:14px;
+	}
+
+  /*************************/
+ /*	CHANNELS	          */
+/*************************/
+
+/* FRAME */
+
+    .channels-wrap {
+        width:220px;
+    }
+
+    .guild-channels {
+        width:220px;
+    }
+
+/* SECTIONS */
+
+    .guild-channels header {
+        margin-top:10px;
+		padding-bottom:5px;
+        padding-right:0px;
+        padding-left:15px;
+        height:25px;
+        font-weight:900;
+    }
+    .guild-channels header:hover {
+        background: linear-gradient(90deg,#282b30 85%,#2e3136);
+    }
+
+	/* TEXT CHANNELS */
+
+        .guild-channels .channel-text a {
+            padding-top:4px;
+            padding-bottom:5px;
+            padding-left:15px;
+            font-size: 14px;
+        }
+
+        .guild-channels .icon+.icon {
+            margin-left:3px;
+            margin-right:-6px;
+        }
+
+		.guild-channels .channel-text.unread:not(.selected):not(.channel-muted):before {
+            width:10px;
+            height:10px;
+            top:8px;
+		}
+
+        /* Channel name width. Doesn't seem to be working. */
+        .guild-channels .channel-name {
+            width:180px !important;
+        }
+
+	/* VOICE CHANNELS */
+
+        .guild-channels .channel-voice {
+            padding-top:4px;
+            padding-bottom:5px;
+			padding-left:15px;
+            font-size: 14px;
+        }
+			.guild-channels .channel-voice:hover {
+                background: linear-gradient(90deg,#282b30 85%,#2e3136);
+            }
+            .guild-channels .channel-voice-states {
+                margin-top:5px;
+            }
+
+	/* ACCOUNT */
+
+        .account {
+            height:50px;
+        }
+
+		.account .btn:hover {
+            background-color:#383c42;
+		}
+
+		#voice-connection .btn:after {
+            background-color:#383c42;
+		}
+
+		.links {
+            padding-left:9px;
+            padding-right:2px;
+		}
+
+		.links::after {
+            padding-left:6px;
+            content: "\2022\2002 Compozy 1.3";
+            color: #535559;
+            font-weight:600;
+
+		}
+
+
+  /*************************/
+ /* CHAT		          */
+/*************************/
+
+/* MESSAGE GROUP (COZY) */
+
+    .message-group {
+        padding-top:4px;
+        padding-bottom:4px;
+        padding-left:6px;
+        margin-left:6px;
+        border-bottom:1px solid #eceeef;
+    }
+        .message-group:hover {
+            background-color:#fafafa;
+        }
+        .theme-dark .message-group:hover {
+            background-color: #3a3d42;
+        }
+
+	/* USER */
+
+		/* name */
+        .message-group h2 strong {
+            font-size:11px;
+            font-weight:900;
+        }
+
+		/* avatar */
+        .message-group .avatar-large {
+            margin-right:12px;
+            width:30px;
+            height:30px;
+            margin-top:4px;
+            background-size:35px 35px;
+            border-radius:8px;
+        }
+
+		/* timestamp */
+        .message-group h2 .timestamp {
+            font-size:10px;
+            font-style:italic;
+        }
+
+	/* TEXT */
+
+        .message-group .comment .markup {
+            padding-top:2px;
+            padding-bottom:2px;
+            margin-top:0px;
+            font-size:14px;
+        }
+
+		.message-group .comment .attachment {
+			margin-top:5px;
+		}
+
+		.message-group .comment .edited {
+            font-style:italic;
+            padding-left:2px;
+		}
+
+	/* EDITING */
+		.message-group .edit-message .edit-container-outer {
+            margin-left:38px;
+		}
+
+		.message-group .edit-message .channel-textarea {
+            margin-top:3px;
+            padding-top:0px;
+            padding-bottom:0px;
+		}
+
+		.message-group .edit-message .channel-textarea-inner {
+            margin-bottom:0px;
+		}
+
+	/* EMBEDS */
+		.embed {
+            padding-top:2px;
+            padding-bottom:2px;
+            padding-left:8px;
+            padding-right:5px;
+            margin-top:2px;
+		}
+		.embed.embed-image {
+            margin-left:8px;
+		}
+		.message-group .comment .attachment-image {
+            margin-top:0px;
+            margin-left:8px;
+		}
+
+/* MESSAGE (COMPACT) */
+
+    .message-group.compact.message-group {
+        padding-top:0px;
+        padding-bottom:0px;
+    }
+
+    .message-group.compact .message .markup .user-name {
+        font-size:13px;
+        font-weight:700;
+        padding-right:2px;
+    }
+
+    .message-group.compact .message .markup {
+        margin-top:0px;
+        padding-top:0px;
+        padding-bottom:0px;
+        text-indent:-70px;
+        padding-left:70px;
+    }
+
+    .message-group.compact .timestamp {
+        width:50px;
+        font-size:10px;
+    }
+
+/* MISC */
+
+    .message-group .comment {
+        margin-right:5px;
+    }
+
+	.chat .jump-to-present-bar {
+		left:10px;
+		bottom:-1px;
+	}
+
+	.chat .new-messages-bar {
+		left:10px;
+		top:-1px;
+	}
+
+/* TEXT INPUT BOX */
+
+    .channel-textarea {
+        margin-top:2px;
+        padding-top:6px;
+        padding-bottom:6px;
+        margin-bottom:20px;
+    }
+
+    .channel-textarea-inner {
+        padding-top:7px;
+        padding-bottom:6px;
+        margin-bottom:6px;
+    }
+
+    .channel-textarea-upload {
+        margin-top:-6px;
+        margin-bottom:-6px;
+        padding-right:1px;
+    }
+
+	/* FORM */
+
+        .chat form {
+            margin-left:10px;
+            margin-right:10px;
+            margin-top:10px;
+        }
+
+	/* TYPING */
+
+        .typing {
+            height:25px;
+            padding-bottom:2px;
+        }
+
+
+  /*************************/
+ /*	USERS			      */
+/*************************/
+
+/* FRAME */
+
+    .channel-members {
+        padding-top:5px;
+
+    }
+
+/* SECTIONS */
+
+    .channel-members h2 {
+        padding-left:15px;
+        margin-top:15px;
+        margin-bottom:5px;
+		font-size:11px;
+	}
+
+    .channel-members .member+h2 {
+        padding-left:15px;
+        margin-top:15px;
+        margin-bottom:5px;
+		font-size:11px;
+    }
+
+/* USERS */
+
+    .channel-members .member {
+        padding-left:15px;
+        padding-right:0px;
+    }
+
+    .avatar-small {
+        height:20px;
+        width:20px;
+        background-size:20px 20px;
+        border-radius:5px;
+    }
+
+    .avatar-small .status {
+        width:7px;
+        height:7px;
+    }
+
+    .status.status-typing {
+        width: 20px !important;
+        height: 7px !important;
+    }
+
+    .channel-members .member-username {
+        width:200px;
+    }
+
+    .channel-members .member-username-inner {
+        font-size:14px;
+    }
+
+	.channel-members .member .member-activity:before {
+        content:"—";
+        padding-left:2px;
+        padding-right:2px;
+	}
+
+	.channel-members .member .member-activity {
+        font-size:10px;
+		font-style:italic;
+	}
+
+  /*************************/
+ /*	USERS (PRIVATE)       */
+/*************************/
+
+    .private-channels .scroller {
+        padding-top:10px;
+        padding-bottom:10px;
+    }
+
+    .private-channels header {
+        padding-top:5px;
+        padding-bottom:5px;
+        padding-left:10px;
+    }
+
+    .private-channels .channel {
+        height:30px !important;
+    }
+
+    .private-channels .channel a {
+        padding-left:10px;
+        height:30px !important;
+    }
+
+
+  /*************************/
+ /*	FRIENDS			      */
+/*************************/
+
+	#friends .friends-table .friends-table-header {
+		padding-top:4px;
+        padding-bottom:4px;
+	}
+
+	#friends .friends-table .friends-row {
+		height:45px !important;
+	}
+
+	.search-bar input:hover {
+        background-color:#43464d;
+	}
+
+
