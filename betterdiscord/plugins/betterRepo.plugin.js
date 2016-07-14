@@ -175,7 +175,7 @@ betterRepo.prototype.checkServer = function() {
 				} else {
 					markup.append(source);
 				}
-				markup.append($('<p class="credits">\n' + (exists ? '' : 'not ') + 'installed</p>'));
+				markup.append($('<p class="credits">\n(' + (exists ? '' : 'not ') + 'installed)</p>'));
 
 				if (exists) {
 					group.addClass("installed");
