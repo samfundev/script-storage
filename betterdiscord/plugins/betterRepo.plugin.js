@@ -15,6 +15,49 @@ function GetCurrentServerID() {
 	return ID
 }
 
+// These function's were based on the quickSave plugin. https://github.com/kosshishub/Quicksave-BD-plugin/blob/master/Quicksave.plugin.js
+var dir = process.env.APPDATA + "\\BetterDiscord\\plugins\\"
+function fileExists(filename) {
+	try{
+		require('fs').accessSync(filename)
+		return true;
+	} catch(e) {
+		return false;
+	}
+}
+
+function downloadFile(url, callbacks) {
+	var fs = require('fs');
+	var net = (url.split('//')[0] == 'https:') ? require('https') : require('http');
+
+	var filename = url.match(/[^\/]+$/)[0];
+
+	var dest = dir + filename;
+	if (fileExists(dest)) {
+		if (callbacks.exists) {
+			callbacks.exists();
+		}
+		return;
+	}
+
+	var file = fs.createWriteStream(dest);
+	net.get(url, function(response) {
+		response.pipe(file);
+		file.on('finish', function() {
+			if (callbacks.installed) {
+				callbacks.installed();
+			}
+			file.close();
+		});
+	}).on('error', function(err) {
+		if (callbacks.failed) {
+			callbacks.failed();
+		}
+		fs.unlink(dest);
+		file.close();
+	});
+}
+
 var RepoCSS = `.plugins .message-group .comment .markup code.inline {
     background: transparent;
     font-size: 100%;
@@ -53,6 +96,11 @@ var RepoCSS = `.plugins .message-group .comment .markup code.inline {
     padding: 5px 13px;
 	white-space: nowrap;
 	color: #fff;
+}
+
+.plugins .installed {
+	box-shadow: -1000px -1000px rgba(114, 137, 218, 0.25) inset;
+	padding-left: 10px;
 }`
 
 var scroller
@@ -85,9 +133,30 @@ betterRepo.prototype.checkServer = function() {
 
 				// Handle download button
 				var direct;
+				var exists = false;
 				var href = source.attr("href");
 				if (href.search("raw.githubusercontent.com") > -1 && (href.endsWith(".plugin.js") || href.endsWith(".js"))) {
-					direct = source.clone().attr("download", href.match(/[^\/]+$/)[0]).text("Download Plugin");
+					if (!fileExists(dir + href.match(/[^\/]+$/)[0])) {
+						direct = source.clone().text("Install Plugin").click(function() {
+							direct.text("Installing plugin...");
+							downloadFile(href, {
+								exists: function() {
+									direct.text("Plugin already installed!");
+								},
+								installed: function() {
+									direct.text("Plugin Installed!");
+								},
+								failed: function() {
+									direct.text("Installation failed!");
+								},
+							});
+							setTimeout(function() { direct.text("Install Plugin"); }, 2500);
+
+							return false;
+						});
+					} else {
+						exists = true;
+					}
 				}
 
 				// Handle title & credits
@@ -105,6 +174,11 @@ betterRepo.prototype.checkServer = function() {
 					markup.append(direct, "  or  ", source);
 				} else {
 					markup.append(source);
+				}
+				markup.append($('<p class="credits">\n' + (exists ? '' : 'not ') + 'installed</p>'));
+
+				if (exists) {
+					group.addClass("installed");
 				}
 
 				scroller.append(group);
