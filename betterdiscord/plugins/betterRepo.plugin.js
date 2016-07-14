@@ -72,10 +72,10 @@ betterRepo.prototype.checkServer = function() {
 			scroller = $('<div class="scroller plugins"></div>')
 			$(".messages-wrapper .scroller-wrap").append(scroller);
 
-			BdApi.injectCSS("RepoCSS", RepoCSS);
+			//BdApi.injectCSS("RepoCSS", RepoCSS);
 		}
 
-		$(".messages .message-content .inline").each(function() {
+		$(".messages .message .inline").each(function() {
 			var parent = $(this).parent();
 			var title = $(this).clone();
 
