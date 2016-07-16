@@ -8,18 +8,18 @@ function GetCurrentServerID() {
 	var ID = 0;
 
 	$(".guild.selected .avatar-small").each(function() {
-		var server = $(this)
+		var server = $(this);
 		ID = parseInt(server.attr("href").match(/\/(\d+)\//)[1]);
-	})
+	});
 
-	return ID
+	return ID;
 }
 
 // These function's were based on the quickSave plugin. https://github.com/kosshishub/Quicksave-BD-plugin/blob/master/Quicksave.plugin.js
-var dir = process.env.APPDATA + "\\BetterDiscord\\plugins\\"
+var dir = process.env.APPDATA + "\\BetterDiscord\\plugins\\";
 function fileExists(filename) {
 	try{
-		require('fs').accessSync(filename)
+		require('fs').accessSync(filename);
 		return true;
 	} catch(e) {
 		return false;
@@ -101,9 +101,9 @@ var RepoCSS = `.plugins .message-group .comment .markup code.inline {
 .plugins .installed {
 	box-shadow: -1000px -1000px rgba(114, 137, 218, 0.25) inset;
 	padding-left: 10px;
-}`
+}`;
 
-var scroller
+var scroller;
 betterRepo.prototype.removeRepo = function() {
 	$(".messages .message-content .inline").attr("plugin-state", null);
 	BdApi.clearCSS("RepoCSS");
@@ -112,12 +112,12 @@ betterRepo.prototype.removeRepo = function() {
 		scroller.remove();
 		scroller = null;
 	}
-}
+};
 
 betterRepo.prototype.checkServer = function() {
 	if (GetCurrentServerID() == BetterID && $(".title .channel-name").text() == "plugin-repo") {
 		if (!scroller) {
-			scroller = $('<div class="scroller plugins"></div>')
+			scroller = $('<div class="scroller plugins"></div>');
 			$(".messages-wrapper .scroller-wrap").append(scroller);
 
 			BdApi.injectCSS("RepoCSS", RepoCSS);
@@ -127,7 +127,7 @@ betterRepo.prototype.checkServer = function() {
 			var parent = $(this).parent();
 			var title = $(this).clone();
 
-			if (title.text().search("-") > -1 && $(this).attr("plugin-state") == undefined) {
+			if (title.text().search("-") > -1 && $(this).attr("plugin-state") === undefined) {
 				var description = parent.find("pre").first().clone();
 				var source =  parent.find("a").first().clone().text("View Source");
 
@@ -160,7 +160,7 @@ betterRepo.prototype.checkServer = function() {
 				}
 
 				// Handle title & credits
-				var info = title.text().match(/(.+) - (.+)/)
+				var info = title.text().match(/(.+) - (.+)/);
 				title.text(info[1]);
 				var credit = $('<p class="credits">By: </p>').append($('<text>' + info[2] + '</text>'));
 
@@ -170,7 +170,7 @@ betterRepo.prototype.checkServer = function() {
 
 				markup.append(title, credit, '<p class="desc">Description:</p>', description, "\n");
 				if (direct) {
-					source.css("margin-left", "0px")
+					source.css("margin-left", "0px");
 					markup.append(direct, "  or  ", source);
 				} else {
 					markup.append(source);
@@ -189,23 +189,23 @@ betterRepo.prototype.checkServer = function() {
 	} else {
 		this.removeRepo();
 	}
-}
+};
 
-betterRepo.prototype.onMessage = function() { this.checkServer() };
-betterRepo.prototype.start = function() { this.checkServer() };
-betterRepo.prototype.onSwitch = function() { this.checkServer() };
-betterRepo.prototype.load = function() { this.checkServer() };
+betterRepo.prototype.onMessage = function() { this.checkServer(); };
+betterRepo.prototype.start = function() { this.checkServer(); };
+betterRepo.prototype.onSwitch = function() { this.checkServer(); };
+betterRepo.prototype.load = function() { this.checkServer(); };
 
-betterRepo.prototype.unload = function() { this.removeRepo() };
-betterRepo.prototype.stop = function() { this.removeRepo() };
+betterRepo.prototype.unload = function() { this.removeRepo(); };
+betterRepo.prototype.stop = function() { this.removeRepo(); };
 
 betterRepo.prototype.observer = function () {};
 betterRepo.prototype.getSettingsPanel = function () {
-	return ""
+	return "";
 };
 
 betterRepo.prototype.getName = function () {
-	return "Better Plugin Repository"
+	return "Better Plugin Repository";
 };
 
 betterRepo.prototype.getDescription = function () {

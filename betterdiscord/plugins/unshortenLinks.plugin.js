@@ -12,24 +12,23 @@ var domains = [
 	"t.co",
 	"1url.com",
 	"ow.ly",
-]
+];
 
 unshortenLinks.prototype.checklinks = function() {
 	$(".message").each(function() {
-		var message = $(this)
+		var message = $(this);
 
 		message.find($("a")).each(function() {
 			var link = $(this);
 	        var href = link.attr("href");
-	        if (href == undefined) { return true; };
+	        if (href === undefined) { return true; }
 
 			if (whitelist) {
 				var passed = false;
 
-				for (i = 0; i < domains.length; i++) {
+				for (var i = 0; i < domains.length; i++) {
 					if (this.hostname == domains[i]) {
 						passed = true;
-						break
 					}
 				}
 
@@ -43,14 +42,14 @@ unshortenLinks.prototype.checklinks = function() {
 				url: "https://jsonp.afeld.me/?url=https://unshorten.me/json/" + href,
 				success: function (data) {
 					if (data.success) {
-						link.attr("href", data.resolvedURL)
-						link.text(data.resolvedURL)
+						link.attr("href", data.resolvedURL);
+						link.text(data.resolvedURL);
 					}
 				}
-			})
-		})
-	})
-}
+			});
+		});
+	});
+};
 
 unshortenLinks.prototype.onMessage = function () {
 	this.checklinks();
