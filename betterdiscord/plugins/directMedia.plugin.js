@@ -3,7 +3,7 @@
 var directMedia = function () {}
 
 function testImage(url, callback) {
-	var img = $('<img src="' + url + '" height="0" width="0"></img>')
+	var img = $('<img src="' + encodeURI(url) + '" height="0" width="0"></img>')
 	img.on("error", function() {
 		img.remove()
 		callback(false)
@@ -81,9 +81,9 @@ directMedia.prototype.checklinks = function() {
 									if (success) {
 										var html = $(
 											'<div class="embed embed-image custom">' +
-												'<a class="embed-thumbnail embed-thumbnail-image" href="' + href + '" target="_blank" rel="noreferrer">' +
+												'<a class="embed-thumbnail embed-thumbnail-image" href="' + encodeURI(href) + '" target="_blank" rel="noreferrer">' +
 													'<span class="image">' +
-														'<img class="image" src="' + href + '" href="' + href + '">' +
+														'<img class="image" src="' + encodeURI(href) + '" href="' + encodeURI(href) + '">' +
 														(href.endsWith(".gif") ? '<span class="image-gif"></span>' : '') +
 													'</span>' +
 												'</a>' +
