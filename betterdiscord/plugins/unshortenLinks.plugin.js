@@ -34,14 +34,6 @@ function initQuery($) {
 	}
 }
 
-function correctScrolling(func) {
-	var container = $(".messages")
-	var y = container.scrollBottom()
-	func()
-
-	container.scrollBottom(y)
-}
-
 function unshortenURL(url) {
 	return new Promise(function(resolve, reject) {
 		if (urlCache[url]) {
