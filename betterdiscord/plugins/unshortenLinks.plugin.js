@@ -1,8 +1,9 @@
 //META{"name":"unshortenLinks"}*//
 
 var unshortenLinks = function () {}
+var request = require("request")
 
-// To limit API calls I added a whitelist.
+// To limit http requests I added a whitelist.
 var whitelist = true
 var domains = [
 	"goo.gl",
@@ -13,8 +14,10 @@ var domains = [
 	"1url.com",
 	"ow.ly",
 ]
+var urlCache = {}
 
-// Credit to noodlebox for this jquery plugin & the original code for the correctScrolling function.
+
+// Thanks to noodlebox for this this jQuery plugin.
 function initQuery($) {
 	$.fn.scrollBottom = function(val) {
 		   var elem = this[0]
@@ -32,52 +35,58 @@ function initQuery($) {
 }
 
 function correctScrolling(func) {
-    var messagesContainer = $(".messages")
-    var atBottom = messagesContainer.scrollBottom() < 0.5
-    func()
+	var container = $(".messages")
+	var y = container.scrollBottom()
+	func()
 
-    if (atBottom) {
-        messagesContainer.scrollBottom(0)
-    }
+	container.scrollBottom(y)
+}
+
+function unshortenURL(url) {
+	return new Promise(function(resolve, reject) {
+		if (urlCache[url]) {
+			resolve(urlCache[url])
+		} else {
+			request({method: "HEAD", url: url, followAllRedirects: true}, 
+			function (error, response) {
+				if (!error) {
+					urlCache[url] = response.request.href
+					resolve(response.request.href)
+				} else {
+					reject()
+				}
+			})
+		}
+	})
 }
 
 unshortenLinks.prototype.checklinks = function() {
-	correctScrolling(function() {
-		$(".message").each(function() {
-			var message = $(this)
+	var messagesContainer = $(".messages")
+	var bottom = messagesContainer.scrollBottom()
 
-			message.find($("a")).each(function() {
-				var link = $(this)
-		        var href = link.attr("href")
-		        if (href === undefined) { return true }
+	$(".message a").each(function() {
+		var link = $(this)
+		var href = link.attr("href")
+		if (href === undefined) { return true }
 
-				if (whitelist) {
-					var passed = false
+		if (whitelist && domains.indexOf(this.hostname) == -1) {
+			return true
+		}
 
-					for (var i = 0; i < domains.length; i++) {
-						if (this.hostname == domains[i]) {
-							passed = true
-						}
-					}
-
-					if (!passed) {
-						return true
-					}
-				}
-
-				$.ajax({
-					dataType: "json",
-					url: "https://jsonp.afeld.me/?url=https://unshorten.me/json/" + href,
-					success: function (data) {
-						if (data.success) {
-							link.attr("href", data.resolvedURL)
-							link.text(data.resolvedURL)
-						}
-					}
-				})
-			})
+		unshortenURL(href).then(function(url) {
+			link.attr("href", url)
+			link.text(url)
 		})
 	})
+
+	function forceScroll() {
+		if (messagesContainer.scrollBottom() != bottom) {
+			messagesContainer.scrollBottom(bottom)
+			setTimeout(forceScroll, 1000)
+		}
+	}
+
+	forceScroll()
 }
 
 unshortenLinks.prototype.onMessage = function () {
@@ -104,21 +113,21 @@ unshortenLinks.prototype.stop = function () {}
 unshortenLinks.prototype.observer = function (e) {}
 
 unshortenLinks.prototype.getSettingsPanel = function () {
-    return ""
+	return ""
 }
 
 unshortenLinks.prototype.getName = function () {
-    return "Unshorten Links"
+	return "Unshorten Links"
 }
 
 unshortenLinks.prototype.getDescription = function () {
-    return "Tries to convert most shortened links to the original."
+	return "Converts shortened links to their original url."
 }
 
 unshortenLinks.prototype.getVersion = function () {
-    return "0.1.0"
+	return "0.1.1"
 }
 
 unshortenLinks.prototype.getAuthor = function () {
-    return "samfun123"
+	return "samfun123"
 }

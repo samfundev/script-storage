@@ -3,19 +3,13 @@
 var directMedia = function () {}
 
 function testImage(url, callback) {
-	var img = $('<img src="' + encodeURI(url) + '" height="0" width="0"></img>')
-	img.on("error", function() {
-		img.remove()
-		callback(false)
-	}).on("load", function() {
-		img.remove()
-		callback(true)
-	})
-
-	$(".body").append(img)
+	var img = $("<img>")
+	img.on("load", function() {
+		callback(this.width, this.height)
+	}).attr("src", url)
 }
 
-// Credit to noodlebox for this jquery plugin & the original code for the correctScrolling function.
+// Credit to noodlebox for this jquery plugin.
 function initQuery($) {
 	$.fn.scrollBottom = function(val) {
 		   var elem = this[0]
@@ -32,74 +26,88 @@ function initQuery($) {
 	}
 }
 
-function correctScrolling(func) {
-    var messagesContainer = $(".messages")
-    var atBottom = messagesContainer.scrollBottom() < 0.5
-    func()
-
-    if (atBottom) {
-        messagesContainer.scrollBottom(0)
-    }
-}
-
-var links = []
 directMedia.prototype.checklinks = function() {
-	correctScrolling(function() {
-		$(".message").each(function() {
-			var message = $(this)
+	var messagesContainer = $(".messages")
+	var bottom = messagesContainer.scrollBottom()
+	var loading = 0
 
-			message.find($("a")).each(function() {
-				if (links.indexOf(this) == -1) {
-					links.push(this)
+	$(".message").each(function() {
+		var msg = $(this)
 
+		msg.find("a").each(function() {
+			var link = $(this)
+
+			var href = link.attr("href")
+			if (href == undefined) return true
+			href = href.replace("http:", "https:")
+			
+			testImage(href, function(width, height) {
+				var duplicate = false
+				var clear = false
+
+				msg.find(".attachment-image a").each(function() {
 					var link = $(this)
-			        var href = link.attr("href")
-			        if (href === undefined) { return true }
+					var href2 = link.attr("href")
+					if (href2 == undefined) return true
+					href2 = href2.replace("http:", "https:")
 
-					if (href.endsWith(".png") || href.endsWith(".jpg") || href.endsWith(".gif")) {
-						testImage(href.replace("http:", "https:"), function(https) {
-							if (https) {
-								href = href.replace("http:", "https:")
-							}
+					if (href == href2 || link.hasClass("directMedia")) {
+						duplicate = true
 
-							var embed = false
-							message.find(".embed-thumbnail-image").each(function() {
-								var img = $(this)
-								var href2 = img.attr("href")
-						        if (href2 === undefined) { return true }
-								if (https) {
-									href2 = href2.replace("http:", "https:")
-								}
+						if (!link.hasClass("directMedia")) {
+							clear = true
+						}
+					}
+				})
 
-								if (href == href2) {
-									embed = true
-								}
-							})
+				if (clear) {
+					msg.find(".attachment-image a.directMedia").remove()
+				}
 
-							if (!embed && link.text() !== "") {
-								testImage(href, function(success) {
-									if (success) {
-										var html = $(
-											'<div class="embed embed-image custom">' +
-												'<a class="embed-thumbnail embed-thumbnail-image" href="' + encodeURI(href) + '" target="_blank" rel="noreferrer">' +
-													'<span class="image">' +
-														'<img class="image" src="' + encodeURI(href) + '" href="' + encodeURI(href) + '">' +
-														(href.endsWith(".gif") ? '<span class="image-gif"></span>' : '') +
-													'</span>' +
-												'</a>' +
-											'</div>'
-										)
+				if (!duplicate) {
+					/*<div class="attachment-image">
+						<a href="" target="_blank" rel="noreferrer">
+							<img class="image" src="" href="" width="" height="">
+						</a>
+					</div>*/
 
-										message.find(".accessory").append(html)
-									}
-								})
-							}
-						})
+					var attachment = $('<div class="attachment-image">').appendTo(msg.find(".accessory"))
+					var link = $('<a class="directMedia" href="' + encodeURI(href) + '" target="_blank" rel="noreferrer">').appendTo(attachment)
+					loading++
+					var img = $('<img class="image" src="' + encodeURI(href) + '" href="' + encodeURI(href) + '">').appendTo(link)
+					img.on("load", function() {
+						loading--
+					})
+					if (href.endsWith(".gif")) {
+						$('<span class="image-gif"></span>').appendTo(img)
+					}
+
+					if (img.height() == height) {
+						img.height(img.width() / width * img.height()) 
+					} else if (img.width() == width) {
+						img.width(img.height() / height * img.width())
 					}
 				}
 			})
 		})
 	})
+
+	function forceScroll() {
+		if (messagesContainer.scrollBottom() != bottom) {
+			messagesContainer.scrollBottom(bottom)
+			setTimeout(forceScroll, 1000)
+		}
+	}
+
+	function wait() {
+		if (loading == 0) {
+			setTimeout(forceScroll, 2000)
+		} else {
+			setTimeout(wait, 100)
+		}
+	}
+
+	wait()
 }
 
 directMedia.prototype.onMessage = function () {
@@ -118,7 +126,6 @@ directMedia.prototype.onSwitch = function () {
 directMedia.prototype.load = function () {
 	links = []
 	initQuery($)
-	this.checklinks()
 }
 
 directMedia.prototype.unload = function () {}
@@ -128,21 +135,21 @@ directMedia.prototype.stop = function () {}
 directMedia.prototype.observer = function (e) {}
 
 directMedia.prototype.getSettingsPanel = function () {
-    return ""
+	return ""
 }
 
 directMedia.prototype.getName = function () {
-    return "Direct Media"
+	return "Direct Media"
 }
 
 directMedia.prototype.getDescription = function () {
-    return "Tries to convert most direct media links to embedded pictures."
+	return "Tries to convert most direct media links to embedded pictures."
 }
 
 directMedia.prototype.getVersion = function () {
-    return "0.1.0"
+	return "0.1.0"
 }
 
 directMedia.prototype.getAuthor = function () {
-    return "samfun123"
+	return "samfun123"
 }
