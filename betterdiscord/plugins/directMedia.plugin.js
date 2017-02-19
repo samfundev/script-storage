@@ -91,17 +91,12 @@ directMedia.prototype.checklinks = function() {
 			})
 		})
 	})
-
-	function forceScroll() {
-		if (messagesContainer.scrollBottom() != bottom) {
-			messagesContainer.scrollBottom(bottom)
-			setTimeout(forceScroll, 1000)
-		}
-	}
-
+	
 	function wait() {
 		if (loading == 0) {
-			setTimeout(forceScroll, 2000)
+			setTimeout(function() {
+				messagesContainer.scrollBottom(bottom)
+			}, 2000)
 		} else {
 			setTimeout(wait, 100)
 		}

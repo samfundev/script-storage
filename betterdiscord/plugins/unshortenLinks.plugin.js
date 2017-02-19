@@ -71,14 +71,9 @@ unshortenLinks.prototype.checklinks = function() {
 		})
 	})
 
-	function forceScroll() {
-		if (messagesContainer.scrollBottom() != bottom) {
-			messagesContainer.scrollBottom(bottom)
-			setTimeout(forceScroll, 1000)
-		}
-	}
-
-	forceScroll()
+	setTimeout(function() {
+		messagesContainer.scrollBottom(bottom)
+	}, 2000)
 }
 
 unshortenLinks.prototype.onMessage = function () {
